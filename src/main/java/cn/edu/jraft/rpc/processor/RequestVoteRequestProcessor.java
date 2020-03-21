@@ -13,19 +13,16 @@ public class RequestVoteRequestProcessor extends RpcRequestProcessor<RequestVote
         super(executor, raftServerService);
     }
 
-    public Message processRequest(RequestVoteRequest request, RpcContext context) {
+    public Message doProcessRequest(RequestVoteRequest request, RpcContext context) {
 
-        if(request.isPreVote()){
-
-        }else {
-
+        if (request.isPreVote()) {
+            return raftServerService.handlePreVoteRequest(request);
+        } else {
+            return raftServerService.handleRequestVoteRequest(request);
         }
-
-
-        return null;
     }
 
     public String interest() {
-        return null;
+        return RequestVoteRequest.class.getName();
     }
 }

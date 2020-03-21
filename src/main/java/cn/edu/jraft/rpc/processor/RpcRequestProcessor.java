@@ -24,12 +24,12 @@ public abstract class RpcRequestProcessor<T extends BaseRequest> extends AsyncUs
         this.raftServerService = raftServerService;
     }
 
-    public abstract Message processRequest(T request, RpcContext context);
+    public abstract Message doProcessRequest(T request, RpcContext context);
 
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, T request) {
         try {
-            final Message msg = this.processRequest(request, new RpcContext(bizCtx, asyncCtx));
+            Message msg = this.doProcessRequest(request, new RpcContext(bizCtx, asyncCtx));
             if (msg != null) {
                 asyncCtx.sendResponse(msg);
             }
