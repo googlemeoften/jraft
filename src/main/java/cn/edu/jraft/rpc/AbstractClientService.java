@@ -12,8 +12,12 @@ public abstract class AbstractClientService {
     private static final int TIMEOUT = 3000;
     protected RpcClient rpcClient;
 
+    protected boolean init() {
+        this.rpcClient = new RpcClient();
+        this.rpcClient.init();
 
-
+        return true;
+    }
 
     public RpcResponseFuture invoke(Endpoint endpoint, Message request) {
         try {

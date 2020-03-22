@@ -1,5 +1,6 @@
 package cn.edu.jraft.rpc.processor;
 
+import cn.edu.jraft.Node;
 import cn.edu.jraft.entry.BaseRequest;
 import cn.edu.jraft.entry.Message;
 import cn.edu.jraft.rpc.RaftServerService;
@@ -16,20 +17,17 @@ public abstract class RpcRequestProcessor<T extends BaseRequest> extends AsyncUs
 
     private final Executor executor;
 
-    public final RaftServerService raftServerService;
-
-    public RpcRequestProcessor(Executor executor, RaftServerService raftServerService) {
+    public RpcRequestProcessor(Executor executor) {
         super();
         this.executor = executor;
-        this.raftServerService = raftServerService;
     }
 
-    public abstract Message doProcessRequest(T request, RpcContext context);
+    public abstract Message doProcessRequest(RaftServerService raftServerService, T request, RpcContext context);
 
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, T request) {
         try {
-            Message msg = this.doProcessRequest(request, new RpcContext(bizCtx, asyncCtx));
+            Message msg = this.doProcessRequest((RaftServerService) Node.getInstance(), request, new RpcContext(bizCtx, asyncCtx));
             if (msg != null) {
                 asyncCtx.sendResponse(msg);
             }
