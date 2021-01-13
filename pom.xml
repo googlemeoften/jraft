@@ -10,7 +10,7 @@
 
     <properties>
         <bolt.version>1.5.2</bolt.version>
-        <netty.version>4.1.13.Final</netty.version>
+        <netty.version>4.1.42.Final</netty.version>
     </properties>
 
     <dependencies>
